@@ -1,7 +1,7 @@
+const fs = require('fs');
+const path = require('path');
 const https = require('https');
 const express = require('express');
-const path = require('path');
-const fs = require('fs');
 
 const PORT = process.env.PORT || 3000;
 
@@ -16,8 +16,8 @@ app.get('/', (req, res) => {
 });
 
 https.createServer({
-    key:'key.pem',
-    cert:'cert.pem'
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem')
 }).listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
 });
