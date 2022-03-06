@@ -1,0 +1,24 @@
+{
+  "name": "security-example",
+  "version": "1.0.0",
+  "description": "Practice security and authentication techniques with tools like express, node, and Oauth",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jam-madrigal/security-example.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jam-madrigal/security-example/issues"
+  },
+  "homepage": "https://github.com/jam-madrigal/security-example#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
