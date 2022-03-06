@@ -1,7 +1,7 @@
 const https = require('https');
-const path = require('path');
 const express = require('express');
-const res = require('express/lib/response');
+const path = require('path');
+const fs = require('fs');
 
 const PORT = process.env.PORT || 3000;
 
