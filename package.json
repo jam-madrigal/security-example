@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/jam-madrigal/security-example#readme",
   "dependencies": {
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "helmet": "^5.0.2"
   }
 }
