@@ -10,7 +10,18 @@ const app = express();
 // Keep security middleware at the top, before any routes, so that every request is secured
 app.use(helmet());
 
-app.get('/secret', (req, res) => {
+// Creating a function for user authentication and authorization, then running next(); to allow access to the following endpoints if permitted. This function can now be reused and passed in before the req, res handlers in our endpoints to restrict access as needed
+function checkLoggedIn(req, res, next) {
+    const isLoggedIn = true; // TODO
+    if (!isLoggedIn) {
+        return res.status(401).json({
+            error: "You are not logged in"
+        });
+    }
+    next();
+}
+
+app.get('/secret', checkLoggedIn, (req, res) => {
     return res.send('Your secret talent is magic.');
 });
 
