@@ -10,7 +10,7 @@ const app = express();
 // Keep security middleware at the top, before any routes, so that every request is secured
 app.use(helmet());
 
-// Creating a function for user authentication and authorization, then running next(); to allow access to the following endpoints if permitted. This function can now be reused and passed in before the req, res handlers in our endpoints to restrict access as needed
+// Creating a function for user authentication and authorization, then running next(); to allow access to the following endpoints if permitted. In express, this or any number of other functions can now be reused and passed in before the req, res handlers in our endpoints to restrict access as needed
 function checkLoggedIn(req, res, next) {
     const isLoggedIn = true; // TODO
     if (!isLoggedIn) {
@@ -21,14 +21,22 @@ function checkLoggedIn(req, res, next) {
     next();
 }
 
+// Login endpoint
+app.get('/auth/google', (req, res) => {
+
+})
+
+// Secret endpoint to test authentication/authorization
 app.get('/secret', checkLoggedIn, (req, res) => {
     return res.send('Your secret talent is magic.');
 });
 
+// Root & homepage html
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Creating and listening to our server
 https.createServer({
     key: fs.readFileSync('key.pem'),
     cert: fs.readFileSync('cert.pem')
