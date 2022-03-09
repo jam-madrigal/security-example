@@ -24,7 +24,17 @@ function checkLoggedIn(req, res, next) {
 // Login endpoint
 app.get('/auth/google', (req, res) => {
 
-})
+});
+
+// The callback url is what specifies the redirect from our authorization server (Google in this case) when it sends back the authorization code, which is what we use to get back our access token for all of our requests to gain access to restricted data in our application
+app.get('/auth/google/callback', (req, res) => {
+
+});
+
+// Logout endpoint, logging out doesn't require the user to pass in any data; it will be the same for any provider
+app.get('/auth/logout', (req, res) => {
+
+});
 
 // Secret endpoint to test authentication/authorization
 app.get('/secret', checkLoggedIn, (req, res) => {
