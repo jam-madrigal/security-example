@@ -46,10 +46,11 @@ function checkLoggedIn(req, res, next) {
     next();
 }
 
-// Login endpoint
-app.get('/auth/google', (req, res) => {
-
-});
+// Login endpoint. Also using passport's authenticate function, but instead of redirects, we specify the scope property which points to the data we need from google when everything succeeds. Right now, we are just getting the email of our authenticated user
+app.get('/auth/google', 
+    passport.authenticate('google', {
+        scope: ['email']
+    }));
 
 // The callback url is what specifies the redirect from our authorization server (Google in this case) when it sends back the authorization code, which is what we use to get back our access token for all of our requests to gain access to restricted data in our application. See Oauth flow diagram for more details. Here we just pass in the passport authenticate function, specifying we are using google, as our callback, the third parameter is an object which specifies what to do on success/failure, with redirects. Sessions are also handled here.
 app.get('/auth/google/callback', 
