@@ -3,6 +3,8 @@ const path = require('path');
 const https = require('https');
 const helmet = require('helmet');
 const express = require('express');
+const passport = require('passport');
+const { Strategy } = require('passport-google-oauth20');
 
 require('dotenv').config();
 
@@ -13,9 +15,25 @@ const config = {
     CLIENT_SECRET: process.env.CLIENT_SECRET
 }
 
+const AUTH_OPTIONS = {
+    callbackURL: '/auth/google/callback',
+    clientID: config.CLIENT_ID,
+    clientSecret: config.CLIENT_SECRET
+}
+
+// Verify function for google strategy. Checks if the access token/refresh token are valid, then calls done() to supply passport with the authenticated user, or return an error. Since google will be providing tokens, and if it does we know the user is valid, we do not need to use the parameters to be passwords we check ourselves like we would if not using google oauth. We would use this function to check the values against our database somehow if not using oauth.
+function verifyCallback(accessToken, refreshToken, profile, done) {
+    console.log('Google profile', profile);
+    done(null, profile);
+}
+// Setting up passport to use google's Strategy, taking in an object with the required options for google, and the verify function as parameters
+passport.use(new Strategy(AUTH_OPTIONS, verifyCallback))
+
 const app = express();
 // Keep security middleware at the top, before any routes, so that every request is secured
+// Mounting helmet middleware to cover common security vulnerabilities, and initializing the "passport session" so we can setup passport for authentication
 app.use(helmet());
+app.use(passport.initialize());
 
 // Creating a function for user authentication and authorization, then running next(); to allow access to the following endpoints if permitted. In express, this or any number of other functions can now be reused and passed in before the req, res handlers in our endpoints to restrict access as needed
 function checkLoggedIn(req, res, next) {
@@ -33,7 +51,7 @@ app.get('/auth/google', (req, res) => {
 
 });
 
-// The callback url is what specifies the redirect from our authorization server (Google in this case) when it sends back the authorization code, which is what we use to get back our access token for all of our requests to gain access to restricted data in our application
+// The callback url is what specifies the redirect from our authorization server (Google in this case) when it sends back the authorization code, which is what we use to get back our access token for all of our requests to gain access to restricted data in our application. See Oauth flow diagram for more details.
 app.get('/auth/google/callback', (req, res) => {
 
 });
