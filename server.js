@@ -38,7 +38,8 @@ passport.use(new Strategy(AUTH_OPTIONS, verifyCallback))
 // Save the session to a cookie
 passport.serializeUser((user, done) => {
     // null to say there's been no error, pass in the user directly as our cookie value
-    done(null, user);
+    // Update to only use the user.id to minimize data flow
+    done(null, user.id);
 });
 
 // Deserialize is similar. Takes in an object from our session, returns back the data made available inside express through req.user
