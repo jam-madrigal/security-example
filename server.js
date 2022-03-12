@@ -43,10 +43,10 @@ passport.serializeUser((user, done) => {
 });
 
 // Deserialize is similar. Takes in an object from our session, returns back the data made available inside express through req.user
-// Read/load the session data from a cookie
-passport.deserializeUser((obj, done) => {
+// Read/load the session data from a cookie. This time only taking in the id we read from the cookie.
+passport.deserializeUser((id, done) => {
     // If there is no error, null, return back the object directly. In this case, whatever is coming on from our cookie, is going to be what's populated in this req.user object
-    done(null, obj);
+    done(null, id);
 });
 
 const app = express();
