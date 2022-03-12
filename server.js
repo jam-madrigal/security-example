@@ -25,6 +25,7 @@ const AUTH_OPTIONS = {
 }
 
 // Verify function for google strategy. Checks if the access token/refresh token are valid, then calls done() to supply passport with the authenticated user, or return an error. Since google will be providing tokens, and if it does we know the user is valid, we do not need to use the parameters to be passwords we check ourselves like we would if not using google oauth. We would use this function to check the values against our database somehow if not using oauth.
+// When our oauth flow from google completes, we receive the data in these parameters and log it. The object we see in this console.log is what is being used in our serialize and deserialize functions
 function verifyCallback(accessToken, refreshToken, profile, done) {
     console.log('Google profile', profile);
     done(null, profile);
@@ -60,7 +61,10 @@ app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000,
     keys: [ config.COOKIE_KEY_1, config.COOKIE_KEY_2 ]
 }));
+// We want our passport initialization to be set up after our cookie session, so passport understands we're using cookie-session
 app.use(passport.initialize());
+// Authenticates the session being sent to our server using the keys defined above, then sets the req.user value to contain the user's identity. It allows our deserialize function to be called, which sets this property.
+app.use(passport.session());
 
 // Creating a function for user authentication and authorization, then running next(); to allow access to the following endpoints if permitted. In express, this or any number of other functions can now be reused and passed in before the req, res handlers in our endpoints to restrict access as needed
 function checkLoggedIn(req, res, next) {
@@ -84,7 +88,7 @@ app.get('/auth/google/callback',
     passport.authenticate('google', {
         failureRedirect: '/failure',
         successRedirect: '/',
-        session: false
+        session: true
     }), 
     (req, res) => {
     console.log('Received response from google');
