@@ -38,7 +38,7 @@ passport.use(new Strategy(AUTH_OPTIONS, verifyCallback))
 // Save the session to a cookie
 passport.serializeUser((user, done) => {
     // null to say there's been no error, pass in the user directly as our cookie value
-    // Update to only use the user.id to minimize data flow
+    // Update to only use the user.id to minimize data flow. When logging the entire user, we were using ~900kb of data, now only ~67kb
     done(null, user.id);
 });
 
