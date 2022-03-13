@@ -101,7 +101,9 @@ app.get('/auth/google/callback',
 
 // Logout endpoint, logging out doesn't require the user to pass in any data; it will be the same for any provider
 app.get('/auth/logout', (req, res) => {
-
+    // Clears our req.user and session data and redirects to the root endpoint
+    req.logout();
+    res.redirect('/');
 });
 
 // Secret endpoint to test authentication/authorization
