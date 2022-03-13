@@ -68,8 +68,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Creating a function for user authentication and authorization, then running next(); to allow access to the following endpoints if permitted. In express, this or any number of other functions can now be reused and passed in before the req, res handlers in our endpoints to restrict access as needed
-function checkLoggedIn(req, res, next) {
-    const isLoggedIn = true; // TODO
+function checkLoggedIn(req, res, next) { 
+    // Passport session middleware is storing the req, and we can log it here. deserializeUser
+    console.log('Current user is:', req.user);
+    // If this value exists, then passport has validated the session. Clear cookies for now to verify it works and restricts access to our secret endpoint if we are not logged in.
+    const isLoggedIn = req.isAuthenticated(); 
     if (!isLoggedIn) {
         return res.status(401).json({
             error: "You are not logged in"
